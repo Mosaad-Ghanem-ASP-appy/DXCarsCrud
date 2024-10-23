@@ -1,0 +1,55 @@
+﻿
+<h2 class="content-block">Cars</h2>
+
+@(
+Html.DevExtreme().DataGrid<Car>()
+    .ElementAttr(new { @class = "dx-card wide-card" })
+    .DataSource(d => d.Mvc()
+        .Controller("Cars")
+        .LoadAction("Get")
+        .UpdateAction("Put")
+        .InsertAction("Post")
+        .DeleteAction("Delete")
+        .Key("CarNo")
+    )
+    .ShowBorders(false)
+    .FilterRow(f => f.Visible(true))
+    .FocusedRowEnabled(true)
+    .FocusedRowIndex(0)
+    .Editing(e => e
+        .Mode(GridEditMode.Popup)
+        .RefreshMode(GridEditRefreshMode.Reshape)
+        .AllowAdding(true)
+        .AllowDeleting(true)
+        .AllowUpdating(true)
+    )
+    .ColumnAutoWidth(true)
+    .ColumnHidingEnabled(true)
+    .Columns(columns =>
+    {
+        columns.AddFor(m => m.CarNo).
+        AllowEditing(false);
+        columns.AddFor(m => m.UserNo);
+        columns.AddFor(m => m.ArName);
+        columns.AddFor(m => m.EnName);
+        columns.AddFor(m => m.CardNo);
+        columns.AddFor(m => m.BeginDate);
+        columns.AddFor(m => m.EndDate);
+        columns.AddFor(m => m.Company);
+        columns.AddFor(m => m.ColorNo).
+            Lookup(lookup =>
+            {
+                lookup.DataSource(ds => ds.Mvc().Controller("Cars").
+                                            LoadAction("ColorsLookup").Key("Value"))
+                                            .ValueExpr("Value")
+                                            .DisplayExpr("Text");
+            });
+        columns.AddFor(m => m.Model);
+    })
+    .Paging(p => p.PageSize(2))
+    .Pager(p => p
+        .ShowPageSizeSelector(true)
+        .AllowedPageSizes(new[] { 5, 10, 20 })
+        .ShowInfo(true)
+    )
+)
