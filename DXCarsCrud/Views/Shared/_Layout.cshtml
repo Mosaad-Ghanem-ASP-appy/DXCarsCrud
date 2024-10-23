@@ -143,6 +143,12 @@
                     });
 
                     items.Add()
+                    .Text("Weather")
+                    .Icon("weather")
+                    .Option("path", GetUrl("Weather", "SearchByCity"))
+                    .Selected(IsCurrentUrl("Weather"));
+
+                    items.Add()
                     .Text("About")
                     .Icon("info")
                     .Option("path", GetUrl("About"))

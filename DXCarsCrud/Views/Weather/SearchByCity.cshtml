@@ -1,0 +1,107 @@
+﻿@model WeatherResponse
+<style>
+    .mg {
+        /* background-image: url('https://img.freepik.com/premium-psd/weather-background-with-clouds_23-2150374499.jpg'); */
+        margin: 0;
+        padding: 100px;
+        background-size: cover;
+    }
+</style>
+<div style="display: flex; justify-content: center; align-items: center; margin-top: 30px; font-size: larger;">
+    <div style="margin-right: 20px; text-align: center;">
+        <div class="form-group">
+            <label class="form-control">Search By City</label>
+            @using (Html.BeginForm("SearchByCity", "Weather", FormMethod.Get))
+            {
+                        @(Html.DevExtreme().TextBox()
+                            .ID("txtCity")
+                            .Name("city")
+                            .Value(Model.location.name)
+                            .Placeholder("Enter your city")
+                            .Mode(TextBoxMode.Search)
+                            .StylingMode(EditorStylingMode.Filled)
+                            .ShowClearButton(true)
+                            )
+                        <br />
+                        @(Html.DevExtreme().Button()
+                            .Text("Search")
+                            .StylingMode(ButtonStylingMode.Outlined)
+                            .Icon("search")
+                            .Type(ButtonType.Default)
+                            .UseSubmitBehavior(true)
+                            )
+                
+            }
+        </div>
+    </div>
+    <div style="margin-right: 20px; text-align: center;">
+        <h2>Weather in <span class="dx-badge" style="font-size: larger; margin-left: 5px;">@Model.location.name</span></h2>
+        <hr />
+    </div>
+    <div style="margin: 20px; text-align: center;">
+        <div class="form-group">
+            <label class="dx-form-group" asp-for="@Model.current.last_updated"></label>
+            <span class="dx-badge">@Model.current.last_updated</span>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="form-control" asp-for="@Model.current.temp_c"></label>
+            <span class="dx-badge">@Model.current.temp_c°</span>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="form-control" asp-for="@Model.current.temp_f"></label>
+            <span class="dx-badge">@Model.current.temp_f</span>
+        </div>
+        <hr />
+        <div class="form-group">
+            <label class="form-control" asp-for="@Model.current.condition"></label>
+            <img src="@Model.current.condition.icon" /><span class="dx-badge"> @Model.current.condition.text</span>
+        </div>
+        <hr />
+        <div>
+            <label class="form-group" asp-for="@Model.current.wind_mph"></label>
+            <span class="dx-badge">@Model.current.wind_mph</span>
+        </div>
+        <hr />
+
+        <div>
+            <label class="form-group" asp-for="@Model.current.wind_kph"></label>
+            <span class="dx-badge">@Model.current.wind_kph</span>
+        </div>
+        <hr />
+
+        <div>
+            <label class="form-group" asp-for="@Model.current.wind_degree"></label>
+            <span class="dx-badge">@Model.current.wind_degree</span>
+        </div>
+        <hr />
+    </div>
+</div>
+
+
+@* @(
+            Html.DevExtreme().Form<WeatherResponse>()
+            .ColCount(2)
+            .ID("gridForm")
+            .FormData(Model.current).ReadOnly(true)
+
+        )
+ *@
+@* @Html.DevExtreme().ResponsiveBox().DataSource(dx => dx.StaticJson().Url(Configrations.Values.apiUrl + "q=cairo")) *@
+@* @Html.DevExpress().CardView(settings =>
+    {
+        settings.Name = "CardView";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "CardViewPartial" };
+        settings.Width = Unit.Pixel(600);
+        settings.Columns.Add("ShipName");
+        settings.Columns.Add("ShipCity");
+        settings.Columns.Add("ShipPostalCode");
+        settings.Columns.Add("ShipCountry");
+
+        settings.SettingsPager.NumericButtonCount = 6;
+        settings.SettingsPager.SettingsTableLayout.ColumnCount = 2;
+        settings.SettingsPager.SettingsTableLayout.RowsPerPage = 2;
+    }).Bind(Model).GetHtml() *@
+
+
