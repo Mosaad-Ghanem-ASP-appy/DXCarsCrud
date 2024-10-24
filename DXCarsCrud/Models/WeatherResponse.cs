@@ -1,9 +1,12 @@
-﻿namespace DXCarsCrud.Models
+﻿using System.ComponentModel;
+
+namespace DXCarsCrud.Models
 {
     public class WeatherResponse
     {
         public Location location { get; set; }
         public Current current { get; set; }
+        public string error { get; set; }
     }
     public class Location
     {
@@ -27,6 +30,7 @@
     public class Current
     {
         public int last_updated_epoch { get; set; }
+        [DisplayName("Last Updated")]
         public string last_updated { get; set; }
         public double temp_c { get; set; }
         public double temp_f { get; set; }

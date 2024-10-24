@@ -22,15 +22,26 @@ namespace DXCarsCrud.Controllers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //GET Method
                 HttpResponseMessage response = await client.GetAsync(Configrations.Values.apiUrl + "q=" + city);
+                WeatherResponse WeatherResponse = new();
                 if (response.IsSuccessStatusCode)
                 {
-                    WeatherResponse WeatherResponse = await response.Content.ReadFromJsonAsync<WeatherResponse>();
+                    WeatherResponse = await response.Content.ReadFromJsonAsync<WeatherResponse>();
 
                     return View(WeatherResponse);
                 }
                 else
                 {
-                    return BadRequest(response.StatusCode);
+                    ModelState.AddModelError("error", "enter a valid city name");
+                    city = "cairo";
+                    response = await client.GetAsync(Configrations.Values.apiUrl + "q=" + city);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        WeatherResponse = await response.Content.ReadFromJsonAsync<WeatherResponse>();
+
+                        return View(WeatherResponse);
+                    }
+
+                    return BadRequest(WeatherResponse);
                 }
             }
 

@@ -13,24 +13,43 @@
             <label class="form-control">Search By City</label>
             @using (Html.BeginForm("SearchByCity", "Weather", FormMethod.Get))
             {
-                        @(Html.DevExtreme().TextBox()
-                            .ID("txtCity")
-                            .Name("city")
-                            .Value(Model.location.name)
-                            .Placeholder("Enter your city")
-                            .Mode(TextBoxMode.Search)
-                            .StylingMode(EditorStylingMode.Filled)
-                            .ShowClearButton(true)
-                            )
-                        <br />
-                        @(Html.DevExtreme().Button()
-                            .Text("Search")
-                            .StylingMode(ButtonStylingMode.Outlined)
-                            .Icon("search")
-                            .Type(ButtonType.Default)
-                            .UseSubmitBehavior(true)
-                            )
-                
+                @(
+                    Html.DevExtreme().TextBox()
+                    .ID("txtCity")
+                    .Name("city")
+                    .ValidationRules(v =>
+                    {
+                        v.AddPattern()
+                        .Pattern(@"^[a-zA-Z\u0600-\u06FF]+$")
+                        .Message("Only letters are allowed.");
+
+                        v.AddStringLength()
+                        .Min(2)
+                        .Max(20)
+                        .Message("city name must be between 2 to 20 character");
+                    })
+
+                    .Value(Model.location.name)
+                    .Placeholder("Enter your city")
+                    .Mode(TextBoxMode.Search)
+                    .StylingMode(EditorStylingMode.Filled)
+                    .ShowClearButton(true)
+                    )
+
+                @if (ViewData.ModelState.Count > 0)
+                {
+                    <div asp-validation-summary="All" style="color:red;"></div>
+
+                    @* <span asp-validation-for="error" style="color:red;" class="text-danger"></span> *@
+                }
+                @(Html.DevExtreme().Button()
+                    .Text("Search")
+                    .StylingMode(ButtonStylingMode.Outlined)
+                    .Icon("search")
+                    .Type(ButtonType.Default)
+                    .UseSubmitBehavior(true)
+                    )
+
             }
         </div>
     </div>
